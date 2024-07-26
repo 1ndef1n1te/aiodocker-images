@@ -1,0 +1,10 @@
+registry_url: "docker.io"
+docker_images:
+  - nginx:alpine
+  - ubuntu:latest
+  - postgres:12
+  - bensuperpc/tinycore:latest
+  - clickhouse/clickhouse-server:24.6.3-alpine
+  - mongodb/mongodb-community-server:6.0-ubuntu2204
+  - nextcloud:stable-apache
+save_images: False
