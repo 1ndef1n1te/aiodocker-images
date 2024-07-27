@@ -1,5 +1,6 @@
 import asyncio
 import aiodocker
+import argparse
 import time
 import aiofiles
 import yaml
@@ -28,7 +29,9 @@ async def docker_save_image(docker_images_client, image):
         async with aiofiles.open(
             f"{image.split('/')[-1].replace(':', '.')}.tar", mode="w"
         ) as f:
+            logger.info(f"Start saving {image}")
             await f.write(tar_content.decode(encoding="latin-1"))
+            logger.info(f"End saving {image}")
 
 async def main(images: list, save_images: bool):
     docker = aiodocker.Docker()
@@ -41,9 +44,12 @@ async def main(images: list, save_images: bool):
     await docker.close()
 
 if __name__ == "__main__":
-    start_time = time.perf_counter()
-    config_file_name = "aiodocker_config.yaml"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", help="Config file with YAML format", required=True)
+    args = parser.parse_args()
+    config_file_name = args.config
     config_data = validate_config(config_file_name)
+    start_time = time.perf_counter()
     asyncio.run(
         main(config_data.get("docker_images"), config_data.get("save_images"))
     )
