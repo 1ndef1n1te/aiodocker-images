@@ -4,14 +4,14 @@ import argparse
 import time
 import aiofiles
 import yaml
-from pydantic import BaseModel, Field
+import os
+from pydantic import BaseModel
 from loguru import logger
 
 class Config(BaseModel):
-    registry_url: str = Field(default="docker.io") 
     docker_images: list[str]
     save_images: bool
-
+    
 def validate_config(config_file_name):
     with open(config_file_name) as config_file:
         config_data = yaml.safe_load(config_file)
@@ -27,7 +27,7 @@ async def docker_save_image(docker_images_client, image):
     async with tarball as tar:
         tar_content = await tar.read()
         async with aiofiles.open(
-            f"{image.split('/')[-1].replace(':', '.')}.tar", mode="w"
+            f"/aiodocker-saved-images/{image.split('/')[-1].replace(':', '.')}.tar", mode="w"
         ) as f:
             logger.info(f"Start saving {image}")
             await f.write(tar_content.decode(encoding="latin-1"))
@@ -37,10 +37,19 @@ async def main(images: list, save_images: bool):
     docker = aiodocker.Docker()
     docker_images_client = aiodocker.images.DockerImages(docker)
     pull_coros = [docker_pull_images(docker_images_client, image) for image in images]
-    await asyncio.gather(*pull_coros)
+    for coroutine in asyncio.as_completed(pull_coros):
+        try:
+            await coroutine
+        except Exception as error:
+            logger.error(f"Can`t pull image due to following error: {error}")
     if save_images:
+      os.makedirs(f'/aiodocker-saved-images', exist_ok=True)
       save_coros = [docker_save_image(docker_images_client, image) for image in images]
-      await asyncio.gather(*save_coros)
+      for coroutine in asyncio.as_completed(save_coros):
+        try:
+            await coroutine
+        except Exception as error:
+            logger.error(f"Can`t save image due to following error: {error}")
     await docker.close()
 
 if __name__ == "__main__":
@@ -54,4 +63,4 @@ if __name__ == "__main__":
         main(config_data.get("docker_images"), config_data.get("save_images"))
     )
     end_time = time.perf_counter() - start_time
-    print(f"Total time elapsed: {end_time:.2f}")
+    logger.info(f"Total time elapsed: {end_time:.2f}")

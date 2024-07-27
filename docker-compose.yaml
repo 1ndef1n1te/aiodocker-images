@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  aiodocker-images:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    container_name: "aiodocker-images"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./aiodocker_config.yaml:/aiodocker_config.yaml"
+      - "./saved-images:/aiodocker-saved-images"
