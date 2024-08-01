@@ -2,3 +2,4 @@ docker_images:
   - nginx:alpine
   - ubuntu:latest
 save_images: True
+save_images_directory: ./aiodocker-saved-images

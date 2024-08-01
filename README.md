@@ -16,7 +16,7 @@ Making faster operations with pulling and saving docker images by using python a
 - save_images: `yaml Boolean`
     - True: save images to directory, directory with saved images inside container is `/aiodocker-saved-images`, this directory should be specify in docker volume
     - False: do not save images
-
+- save_images_directory: `yaml str`: **existing** directory where to save pulled images
 ### Run with docker command
 
 1) Build docker image: `docker build -t aiodocker-images:main .`
