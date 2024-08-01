@@ -9,4 +9,4 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./aiodocker_config.yaml:/aiodocker_config.yaml"
-      - "./saved-images:/aiodocker-saved-images"
+      - "./saved-images:/aiodocker-saved-images" # map local directory to the proper save_images_directory
