@@ -2,7 +2,7 @@ docker_images:
   - nginx:alpine
   - ubuntu:latest
 save_images:
-  save_images_directory: /aiodocker-saved-images
+  save_images_directory: ./aiodocker-saved-images
   retag_images:
     new_repo_url: "samplerepourl.com/sample-project"
     new_tag: "2.0.1"
