@@ -10,12 +10,6 @@ Making faster operations with pulling and saving docker images by using python a
 
 ## Usage
 
-For **pulling** images fill `docker_images` directive
-
-For **pulling and saving** images fill `docker_images` and `save_images:save_images_directory` directive
-
-For **pulling, retagging and saving** retagged images fill `docker_images` and `save_images:save_images_directory`, `save_images:retag_images` directive
-
 
 ### Config file schema
 
@@ -25,6 +19,12 @@ For **pulling, retagging and saving** retagged images fill `docker_images` and `
     - `retag_images`: `yaml dict`
         - `new_repo_url`: `yaml str`: new URL for retagging process
         - `new_tag`: `yaml str`: new tag for retagging process
+        - 
+For **pulling** images fill `docker_images` directive
+
+For **pulling and saving** images fill `docker_images` and `save_images:save_images_directory` directive
+
+For **pulling, retagging and saving** retagged images fill `docker_images` and `save_images:save_images_directory`, `save_images:retag_images` directive
 
 ### Run with docker command
 
