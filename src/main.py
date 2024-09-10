@@ -42,7 +42,7 @@ async def docker_retag(docker_images_client, image, retag_images):
         tag=retag_images.get("new_tag"),
     )
     logger.info(
-        f"Image: {image} successfully retagged | new repo url: {retag_images.get("new_repo_url")} | new tag: {retag_images.get("new_tag")}"
+        f"Image: {image} successfully retagged | new repo url: {retag_images.get('new_repo_url')} | new tag: {retag_images.get('new_tag')}"
     )
 
 
